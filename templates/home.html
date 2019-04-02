@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1 class="mt-5">Index Page</h1>
+    <div id="vue-app" class="card">
+      <div class="card-body">
+        <h4>[[msg]]</h4>
+        <p>Team: [[team.city]] [[team.name]] [[team.sport]]</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="./static/js/vue-resource.js"></script>
+  <script type="text/javascript">
+    let app = new Vue({
+      el: '#vue-app',
+      delimiters: ['[[',']]'],
+      data: {
+        msg: 'Hello from Vue.js',
+        team: {}
+      },
+      methods: {
+        fetchData() {
+          this.$http.get('/test').then(response => {
+            this.team = response.body
+          }, response => {
+            console.log('An error occured');
+          })
+        }
+      },
+      mounted() {
+        this.fetchData()
+      }
+    })
+  </script>
+{% endblock %}
